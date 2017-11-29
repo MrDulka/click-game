@@ -39,6 +39,7 @@ export const reducer = (state = {}, action) => {
       if (state.session.id === action.session) {
         updatedSession = Object.assign({}, state.session, {
         sessionClicks: state.session.sessionClicks + 1
+        })
       }
 
       return Object.assign({}, state, {
