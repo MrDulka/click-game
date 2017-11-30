@@ -1769,6 +1769,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var REQUEST_CLICK = exports.REQUEST_CLICK = 'REQUEST_CLICK';
 var RECIEVE_CLICK = exports.RECIEVE_CLICK = 'RECIEVE_CLICK';
+var REROLL_CLICK = exports.REROLL_CLICK = 'REROLL_CLICK';
 var REQUEST_LEADERBOARD = exports.REQUEST_LEADERBOARD = 'REQUEST_LEADERBOARD';
 var RECEIVE_LEADERBOARD = exports.RECEIVE_LEADERBOARD = 'RECEIVE_LEADERBOARD';
 var SET_SESSION = exports.SET_SESSION = 'SET_SESSION';
@@ -1776,15 +1777,27 @@ var SET_SESSION = exports.SET_SESSION = 'SET_SESSION';
 var LEADERBOARD_API_URL = 'https://klikuj.herokuapp.com/api/v1/leaderboard';
 var CLICK_API_URL = 'https://klikuj.herokuapp.com/api/v1/klik';
 
-var requestClick = exports.requestClick = function requestClick() {
+var requestClick = exports.requestClick = function requestClick(team, session) {
   return {
-    type: REQUEST_CLICK
+    type: REQUEST_CLICK,
+    team: team,
+    session: session
   };
 };
 
-var receiveClick = exports.receiveClick = function receiveClick(team, session) {
+var receiveClick = exports.receiveClick = function receiveClick(teamClicks, sessionClicks, team, session) {
   return {
     type: RECEIVE_CLICK,
+    teamClicks: teamClicks,
+    sessionClicks: sessionClicks,
+    team: team,
+    session: session
+  };
+};
+
+var rerollClick = exports.rerollClick = function rerollClick(team, session) {
+  return {
+    type: REROLL_CLICK,
     team: team,
     session: session
   };
@@ -1830,7 +1843,7 @@ var fetchLeaderboard = exports.fetchLeaderboard = function fetchLeaderboard() {
 
 var postClick = exports.postClick = function postClick(team, session) {
   return function (dispatch) {
-    dispatch(requestClick());
+    dispatch(requestClick(team, session));
     return fetch(CLICK_API_URL, {
       method: 'POST',
       headers: {
@@ -1839,9 +1852,14 @@ var postClick = exports.postClick = function postClick(team, session) {
       },
       body: JSON.stringify({ team: team, session: session })
     }).then(function (response) {
-      if (response.status == 200) {
-        dispatch(receiveClick(team, session));
+      return response.json();
+    }, function (err) {
+      return dispatch(rerollClick(team, session));
+    }).then(function (data) {
+      if (!data) {
+        return;
       }
+      dispatch(receiveClick(data.team_clicks, data.your_clicks, team, session));
     });
   };
 };
@@ -26065,11 +26083,82 @@ exports.reducer = undefined;
 
 var _actions = __webpack_require__(25);
 
+var optimisticClick = function optimisticClick(state, action) {
+  switch (action.type) {
+    case _actions.REQUEST_CLICK:
+      {
+        var teamIsNew = true;
+        var updatedLeaderboard = state.leaderboard.map(function (team) {
+          if (team.name === action.team) {
+            teamIsNew = false;
+            return Object.assign({}, team, {
+              clicks: team.clicks + 1
+            });
+          }
+          return team;
+        });
+        if (teamIsNew) {
+          updatedLeaderboard.push({
+            name: action.team,
+            clicks: 1
+          });
+        }
+
+        var updatedSession = state.session;
+        if (state.session.id === action.session) {
+          updatedSession = Object.assign({}, state.session, {
+            sessionClicks: state.session.sessionClicks + 1
+          });
+        }
+
+        return Object.assign({}, state, {
+          leaderboard: updatedLeaderboard,
+          session: updatedSession
+        });
+      }
+
+    case _actions.REROLL_CLICK:
+      {
+        var newTeamIndex = -1;
+        var _updatedLeaderboard = state.leaderboard.map(function (team, index) {
+          if (team.name === action.team) {
+            if (team.clicks == 1) {
+              newTeamIndex = index;
+            } else {
+              return Object.assign({}, team, {
+                clicks: team.clicks - 1
+              });
+            }
+          }
+          return team;
+        });
+        if (newTeamIndex > -1) {
+          _updatedLeaderboard.splice(index, 1);
+        }
+
+        var _updatedSession = state.session;
+        if (state.session.id === action.session) {
+          _updatedSession = Object.assign({}, state.session, {
+            sessionClicks: state.session.sessionClicks - 1
+          });
+        }
+
+        return Object.assign({}, state, {
+          leaderboard: _updatedLeaderboard,
+          session: _updatedSession
+        });
+      }
+    default:
+      return state;
+  }
+};
+
 var reducer = exports.reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
 
   console.log(action);
+  console.log(state);
   switch (action.type) {
     case _actions.REQUEST_LEADERBOARD:
       return Object.assign({}, state, {
@@ -26092,35 +26181,10 @@ var reducer = exports.reducer = function reducer() {
         }
       });
 
-    case _actions.CLICK:
-      var teamFound = false;
-      var updatedLeaderboard = state.leaderboard.map(function (team) {
-        if (team.name === action.team) {
-          teamFound = true;
-          return Object.assign({}, team, {
-            clicks: team.clicks + 1
-          });
-        }
-        return team;
-      });
-      if (!teamFound) {
-        updatedLeaderboard.push({
-          name: action.team,
-          clicks: 1
-        });
-      }
-
-      var updatedSession = state.session;
-      if (state.session.id === action.session) {
-        updatedSession = Object.assign({}, state.session, {
-          sessionClicks: state.session.sessionClicks + 1
-        });
-      }
-
-      return Object.assign({}, state, {
-        leaderboard: updatedLeaderboard,
-        session: updatedSession
-      });
+    case _actions.REQUEST_CLICK:
+    case _actions.RECEIVE_CLICK:
+    case _actions.REROLL_CLICK:
+      return optimisticClick(state, action);
 
     default:
       return state;
