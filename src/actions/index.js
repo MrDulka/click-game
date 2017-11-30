@@ -1,11 +1,21 @@
-export const CLICK = 'CLICK';
+export const REQUEST_CLICK = 'REQUEST_CLICK';
+export const RECIEVE_CLICK = 'RECIEVE_CLICK';
 export const REQUEST_LEADERBOARD = 'REQUEST_LEADERBOARD';
 export const RECEIVE_LEADERBOARD = 'RECEIVE_LEADERBOARD'
 export const SET_SESSION = 'SET_SESSION';
 
-export const doClick = (team, session) => {
+const LEADERBOARD_API_URL = 'https://klikuj.herokuapp.com/api/v1/leaderboard';
+const CLICK_API_URL = 'https://klikuj.herokuapp.com/api/v1/klik';
+
+export const requestClick = () => {
   return {
-    type: CLICK,
+    type: REQUEST_CLICK
+  }
+}
+
+export const receiveClick = (team, session) => {
+  return {
+    type: RECEIVE_CLICK,
     team,
     session
   }
@@ -34,7 +44,7 @@ export const receiveLeaderboard = (leaderboard) => {
 
 export const fetchLeaderboard = () => dispatch => {
   dispatch(requestLeaderboard());
-  return fetch('https://klikuj.herokuapp.com/api/v1/leaderboard')
+  return fetch(LEADERBOARD_API_URL)
   .then(response => response.json())
   .then(data => {
     let leaderboard = data.map(team => {
@@ -45,4 +55,21 @@ export const fetchLeaderboard = () => dispatch => {
     });
     dispatch(receiveLeaderboard(leaderboard));
   });
+}
+
+export const postClick = (team, session) => dispatch => {
+  dispatch(requestClick());
+  return fetch(CLICK_API_URL, {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    body: JSON.stringify({team, session})
+  })
+  .then(response => {
+    if(response.status == 200) {
+      dispatch(receiveClick(team, session));
+    }
+  })
 }

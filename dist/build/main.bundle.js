@@ -1767,14 +1767,24 @@ var createTransitionManager = function createTransitionManager() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var CLICK = exports.CLICK = 'CLICK';
+var REQUEST_CLICK = exports.REQUEST_CLICK = 'REQUEST_CLICK';
+var RECIEVE_CLICK = exports.RECIEVE_CLICK = 'RECIEVE_CLICK';
 var REQUEST_LEADERBOARD = exports.REQUEST_LEADERBOARD = 'REQUEST_LEADERBOARD';
 var RECEIVE_LEADERBOARD = exports.RECEIVE_LEADERBOARD = 'RECEIVE_LEADERBOARD';
 var SET_SESSION = exports.SET_SESSION = 'SET_SESSION';
 
-var doClick = exports.doClick = function doClick(team, session) {
+var LEADERBOARD_API_URL = 'https://klikuj.herokuapp.com/api/v1/leaderboard';
+var CLICK_API_URL = 'https://klikuj.herokuapp.com/api/v1/klik';
+
+var requestClick = exports.requestClick = function requestClick() {
   return {
-    type: CLICK,
+    type: REQUEST_CLICK
+  };
+};
+
+var receiveClick = exports.receiveClick = function receiveClick(team, session) {
+  return {
+    type: RECEIVE_CLICK,
     team: team,
     session: session
   };
@@ -1804,7 +1814,7 @@ var receiveLeaderboard = exports.receiveLeaderboard = function receiveLeaderboar
 var fetchLeaderboard = exports.fetchLeaderboard = function fetchLeaderboard() {
   return function (dispatch) {
     dispatch(requestLeaderboard());
-    return fetch('https://klikuj.herokuapp.com/api/v1/leaderboard').then(function (response) {
+    return fetch(LEADERBOARD_API_URL).then(function (response) {
       return response.json();
     }).then(function (data) {
       var leaderboard = data.map(function (team) {
@@ -1814,6 +1824,24 @@ var fetchLeaderboard = exports.fetchLeaderboard = function fetchLeaderboard() {
         };
       });
       dispatch(receiveLeaderboard(leaderboard));
+    });
+  };
+};
+
+var postClick = exports.postClick = function postClick(team, session) {
+  return function (dispatch) {
+    dispatch(requestClick());
+    return fetch(CLICK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ team: team, session: session })
+    }).then(function (response) {
+      if (response.status == 200) {
+        dispatch(receiveClick(team, session));
+      }
     });
   };
 };
