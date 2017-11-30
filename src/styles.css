@@ -1,0 +1,55 @@
+body {
+  text-align: center;
+  background-color: #F0F0F0;
+}
+
+.header {
+  background-color: #0077CC;
+  color: #FFFFFF;
+}
+
+.footer {
+  font-style: italic;
+}
+
+.home-container {
+  border: 3px solid #0077CC;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  width: 80%;
+  margin: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.team {
+  text-align: left;
+}
+
+.clicks {
+  text-align: right;
+}
+
+th {
+  color: #C0C0C0;
+  font-size: 0.7em;
+}
+
+tbody > tr:nth-child(even) {
+  background: #EBF5FB;
+}
+
+tbody > tr:nth-child(odd) {
+  background: #D6EAF8;
+}
+
+td, th {
+  padding: 5px;
+}
+
+td {
+  font-weight: bold;
+}

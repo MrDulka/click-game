@@ -1,8 +1,11 @@
 import React from 'react';
+import BackgroundPage from './BackgroundPage';
 
 const Session = ({ match }) => {
   return (
-    <h1>This is team {match.params.team}</h1>
+    <BackgroundPage>
+      <h1>This is team {match.params.team}</h1>
+    </BackgroundPage>
   )
 }
 

@@ -1,8 +1,15 @@
 import React from 'react';
+import GetLeaderboard from '../containers/GetLeaderboard';
+import BackgroundPage from './BackgroundPage';
 
-const Home = () => {
+const Home = ({ leaderboard, addToLeaderboard }) => {
   return (
-    <h1>This is Home</h1>
+    <BackgroundPage>
+      <div className = "home-container">
+        <GetLeaderboard />
+        <p className = "footer">Want to be top? STFU and click!</p>
+      </div>
+    </BackgroundPage>
   )
 }
 
