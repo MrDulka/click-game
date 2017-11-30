@@ -25525,6 +25525,10 @@ var _GetLeaderboard = __webpack_require__(114);
 
 var _GetLeaderboard2 = _interopRequireDefault(_GetLeaderboard);
 
+var _EnterTeam = __webpack_require__(126);
+
+var _EnterTeam2 = _interopRequireDefault(_EnterTeam);
+
 var _BackgroundPage = __webpack_require__(125);
 
 var _BackgroundPage2 = _interopRequireDefault(_BackgroundPage);
@@ -25541,6 +25545,7 @@ var Home = function Home(_ref) {
     _react2.default.createElement(
       'div',
       { className: 'home-container' },
+      _react2.default.createElement(_EnterTeam2.default, null),
       _react2.default.createElement(_GetLeaderboard2.default, null),
       _react2.default.createElement(
         'p',
@@ -25800,11 +25805,11 @@ var setLeaderboard = exports.setLeaderboard = function setLeaderboard(leaderboar
   };
 };
 
-var setSession = exports.setSession = function setSession(team, session) {
+var setSession = exports.setSession = function setSession(team, id) {
   return {
     type: SET_SESSION,
     team: team,
-    session: session
+    id: id
   };
 };
 
@@ -25848,7 +25853,7 @@ exports = module.exports = __webpack_require__(122)(undefined);
 
 
 // module
-exports.push([module.i, "body {\r\n  text-align: center;\r\n  background-color: #F0F0F0;\r\n}\r\n\r\n.header {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n}\r\n\r\n.footer {\r\n  font-style: italic;\r\n}\r\n\r\n.home-container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 80%;\r\n  margin: auto;\r\n}\r\n\r\ntable {\r\n  width: 100%;\r\n  border-collapse: collapse;\r\n}\r\n\r\n.team {\r\n  text-align: left;\r\n}\r\n\r\n.clicks {\r\n  text-align: right;\r\n}\r\n\r\nth {\r\n  color: #C0C0C0;\r\n  font-size: 0.7em;\r\n}\r\n\r\ntbody > tr:nth-child(even) {\r\n  background: #EBF5FB;\r\n}\r\n\r\ntbody > tr:nth-child(odd) {\r\n  background: #D6EAF8;\r\n}\r\n\r\ntd, th {\r\n  padding: 5px;\r\n}\r\n\r\ntd {\r\n  font-weight: bold;\r\n}\r\n", ""]);
+exports.push([module.i, "body { text-align: center; background-color: #F0F0F0; }\r\n\r\n.header { background-color: #0077CC; color: #FFFFFF; }\r\n\r\n.footer { font-style: italic; }\r\n\r\n.home-container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 70%;\r\n  margin: auto;\r\n  padding: 20px;\r\n}\r\n\r\ntable { width: 100%; border-collapse: collapse; }\r\n\r\n.team { text-align: left; }\r\n\r\n.clicks { text-align: right; }\r\n\r\nth { color: #C0C0C0; font-size: 0.7em; }\r\n\r\ntbody > tr:nth-child(even) { background: #EBF5FB; }\r\n\r\ntbody > tr:nth-child(odd) { background: #D6EAF8; }\r\n\r\ntd, th { padding: 5px; }\r\n\r\ntd { font-weight: bold; }\r\n\r\n.team-select { padding: 10px; }\r\n\r\n.team-select > button {\r\n  width: 40%;\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  border-radius: 5px;\r\n  font-size: 3em;\r\n  padding: 10px;\r\n  margin: 10px;\r\n  font-weight: bold;\r\n}\r\n\r\n.team-select > input, label {\r\n  width: 40%;\r\n  float: left;\r\n  clear: left;\r\n  position: relative;\r\n}\r\n\r\n.team-select > input {\r\n  border: 1px solid #C0C0C0;\r\n  border-radius: 5px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -26446,6 +26451,173 @@ var BackgroundPage = function BackgroundPage(_ref) {
 };
 
 exports.default = BackgroundPage;
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(29);
+
+var _actions = __webpack_require__(119);
+
+var _TeamSelect = __webpack_require__(127);
+
+var _TeamSelect2 = _interopRequireDefault(_TeamSelect);
+
+var _reactRouter = __webpack_require__(128);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EnterTeam = function (_React$Component) {
+  _inherits(EnterTeam, _React$Component);
+
+  function EnterTeam(props) {
+    _classCallCheck(this, EnterTeam);
+
+    var _this = _possibleConstructorReturn(this, (EnterTeam.__proto__ || Object.getPrototypeOf(EnterTeam)).call(this, props));
+
+    _this.state = {
+      text: ''
+    };
+
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.submitTeam = _this.submitTeam.bind(_this);
+    return _this;
+  }
+
+  _createClass(EnterTeam, [{
+    key: 'handleChange',
+    value: function handleChange(event) {
+      this.setState({ text: event.target.value });
+    }
+  }, {
+    key: 'submitTeam',
+    value: function submitTeam() {
+      if (!this.state.text) {
+        return;
+      }
+      var randomString = Math.random().toString();
+      this.props.dispatch((0, _actions.setSession)(this.state.text, randomString));
+      this.props.history.push('/' + this.state.text);
+      this.setState({ text: '' });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(_TeamSelect2.default, {
+        text: this.state.text,
+        onChange: this.handleChange,
+        submitTeam: this.submitTeam });
+    }
+  }]);
+
+  return EnterTeam;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRedux.connect)()((0, _reactRouter.withRouter)(EnterTeam));
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TeamSelect = function TeamSelect(_ref) {
+  var text = _ref.text,
+      onChange = _ref.onChange,
+      submitTeam = _ref.submitTeam;
+
+  return _react2.default.createElement(
+    "div",
+    { className: "team-select" },
+    _react2.default.createElement(
+      "label",
+      { htmlFor: "team-name" },
+      "Enter your team name:"
+    ),
+    _react2.default.createElement("input", { type: "text", value: text, onChange: onChange, id: "team-name", placeholder: "Your mom" }),
+    _react2.default.createElement(
+      "button",
+      { onClick: submitTeam, className: "select-team-button" },
+      "CLICK!"
+    )
+  );
+};
+
+exports.default = TeamSelect;
+
+/***/ }),
+/* 128 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MemoryRouter__ = __webpack_require__(93);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "MemoryRouter", function() { return __WEBPACK_IMPORTED_MODULE_0__MemoryRouter__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Prompt__ = __webpack_require__(99);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Prompt", function() { return __WEBPACK_IMPORTED_MODULE_1__Prompt__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Redirect__ = __webpack_require__(101);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Redirect", function() { return __WEBPACK_IMPORTED_MODULE_2__Redirect__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Route__ = __webpack_require__(46);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Route", function() { return __WEBPACK_IMPORTED_MODULE_3__Route__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(20);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Router", function() { return __WEBPACK_IMPORTED_MODULE_4__Router__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__StaticRouter__ = __webpack_require__(107);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StaticRouter", function() { return __WEBPACK_IMPORTED_MODULE_5__StaticRouter__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Switch__ = __webpack_require__(109);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Switch", function() { return __WEBPACK_IMPORTED_MODULE_6__Switch__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__matchPath__ = __webpack_require__(21);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "matchPath", function() { return __WEBPACK_IMPORTED_MODULE_7__matchPath__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__withRouter__ = __webpack_require__(112);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "withRouter", function() { return __WEBPACK_IMPORTED_MODULE_8__withRouter__["a"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /***/ })
 /******/ ]);

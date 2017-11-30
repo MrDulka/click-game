@@ -21,8 +21,8 @@ describe('Testing actions', () => {
     expect(setSession('What a team, wow', 'asdfg')).to.deep.equal({
       type: 'SET_SESSION',
       team: 'What a team, wow',
-      session: 'asdfg'
+      id: 'asdfg'
     });
   });
-  
+
 });

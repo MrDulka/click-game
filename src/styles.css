@@ -1,55 +1,55 @@
-body {
-  text-align: center;
-  background-color: #F0F0F0;
-}
+body { text-align: center; background-color: #F0F0F0; }
 
-.header {
-  background-color: #0077CC;
-  color: #FFFFFF;
-}
+.header { background-color: #0077CC; color: #FFFFFF; }
 
-.footer {
-  font-style: italic;
-}
+.footer { font-style: italic; }
 
 .home-container {
   border: 3px solid #0077CC;
   border-radius: 5px;
   background-color: #FFFFFF;
-  width: 80%;
+  width: 70%;
   margin: auto;
+  padding: 20px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+table { width: 100%; border-collapse: collapse; }
 
-.team {
-  text-align: left;
-}
+.team { text-align: left; }
 
-.clicks {
-  text-align: right;
-}
+.clicks { text-align: right; }
 
-th {
-  color: #C0C0C0;
-  font-size: 0.7em;
-}
+th { color: #C0C0C0; font-size: 0.7em; }
 
-tbody > tr:nth-child(even) {
-  background: #EBF5FB;
-}
+tbody > tr:nth-child(even) { background: #EBF5FB; }
 
-tbody > tr:nth-child(odd) {
-  background: #D6EAF8;
-}
+tbody > tr:nth-child(odd) { background: #D6EAF8; }
 
-td, th {
-  padding: 5px;
-}
+td, th { padding: 5px; }
 
-td {
+td { font-weight: bold; }
+
+.team-select { padding: 10px; }
+
+.team-select > button {
+  width: 40%;
+  background-color: #0077CC;
+  color: #FFFFFF;
+  border-radius: 5px;
+  font-size: 3em;
+  padding: 10px;
+  margin: 10px;
   font-weight: bold;
+}
+
+.team-select > input, label {
+  width: 40%;
+  float: left;
+  clear: left;
+  position: relative;
+}
+
+.team-select > input {
+  border: 1px solid #C0C0C0;
+  border-radius: 5px;
 }

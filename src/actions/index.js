@@ -17,10 +17,10 @@ export const setLeaderboard = (leaderboard) =>{
   }
 }
 
-export const setSession = (team, session) => {
+export const setSession = (team, id) => {
   return {
     type: SET_SESSION,
     team,
-    session
+    id
   }
 }
