@@ -1,10 +1,17 @@
-import { CLICK, SET_LEADERBOARD, SET_SESSION } from '../actions';
+import { CLICK, REQUEST_LEADERBOARD, RECEIVE_LEADERBOARD, SET_SESSION } from '../actions';
 
 export const reducer = (state = {}, action) => {
+  console.log(action);
   switch(action.type) {
-    case SET_LEADERBOARD:
+    case REQUEST_LEADERBOARD:
       return Object.assign({}, state, {
-        leaderboard: [...action.leaderboard]
+        fetchingLeaderboard: true
+      });
+
+    case RECEIVE_LEADERBOARD:
+      return Object.assign({}, state, {
+        fetchingLeaderboard: false,
+        leaderboard: action.leaderboard
       });
 
     case SET_SESSION:

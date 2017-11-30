@@ -3,7 +3,7 @@ import GetLeaderboard from '../containers/GetLeaderboard';
 import EnterTeam from '../containers/EnterTeam';
 import BackgroundPage from './BackgroundPage';
 
-const Home = ({ leaderboard, addToLeaderboard }) => {
+const Home = () => {
   return (
     <BackgroundPage>
       <div className = "home-container">

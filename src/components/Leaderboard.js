@@ -2,7 +2,8 @@ import React from 'react'
 
 const Leaderboard = ({ leaderboard }) => {
   let sortedLeaderboard = leaderboard.sort((a, b) => b.clicks - a.clicks);
-  let teamScores = sortedLeaderboard.map((team, index) => {
+  let topTen = sortedLeaderboard.slice(0, 10);
+  let teamScores = topTen.map((team, index) => {
     return (
       <tr key = {team.name}>
         <td>{index + 1}</td>
