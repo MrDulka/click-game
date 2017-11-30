@@ -1,5 +1,6 @@
 export const REQUEST_CLICK = 'REQUEST_CLICK';
 export const RECIEVE_CLICK = 'RECIEVE_CLICK';
+export const REROLL_CLICK = 'REROLL_CLICK';
 export const REQUEST_LEADERBOARD = 'REQUEST_LEADERBOARD';
 export const RECEIVE_LEADERBOARD = 'RECEIVE_LEADERBOARD'
 export const SET_SESSION = 'SET_SESSION';
@@ -7,15 +8,27 @@ export const SET_SESSION = 'SET_SESSION';
 const LEADERBOARD_API_URL = 'https://klikuj.herokuapp.com/api/v1/leaderboard';
 const CLICK_API_URL = 'https://klikuj.herokuapp.com/api/v1/klik';
 
-export const requestClick = () => {
+export const requestClick = (team, session) => {
   return {
-    type: REQUEST_CLICK
+    type: REQUEST_CLICK,
+    team,
+    session
   }
 }
 
-export const receiveClick = (team, session) => {
+export const receiveClick = (teamClicks, sessionClicks, team, session) => {
   return {
     type: RECEIVE_CLICK,
+    teamClicks,
+    sessionClicks,
+    team,
+    session
+  }
+}
+
+export const rerollClick = (team, session) => {
+  return {
+    type: REROLL_CLICK,
     team,
     session
   }
@@ -58,7 +71,7 @@ export const fetchLeaderboard = () => dispatch => {
 }
 
 export const postClick = (team, session) => dispatch => {
-  dispatch(requestClick());
+  dispatch(requestClick(team, session));
   return fetch(CLICK_API_URL, {
     method: 'POST',
     headers: {
@@ -67,9 +80,14 @@ export const postClick = (team, session) => dispatch => {
       },
     body: JSON.stringify({team, session})
   })
-  .then(response => {
-    if(response.status == 200) {
-      dispatch(receiveClick(team, session));
+  .then(
+    (response) => response.json(),
+    (err) => dispatch(rerollClick(team, session))
+  )
+  .then(data => {
+    if(!data) {
+      return;
     }
+    dispatch(receiveClick(data.team_clicks, data.your_clicks, team, session));
   })
 }
