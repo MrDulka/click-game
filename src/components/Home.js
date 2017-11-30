@@ -6,7 +6,7 @@ import BackgroundPage from './BackgroundPage';
 const Home = () => {
   return (
     <BackgroundPage>
-      <div className = "home-container">
+      <div className = "container">
         <EnterTeam />
         <GetLeaderboard />
         <p className = "footer">Want to be top? STFU and click!</p>

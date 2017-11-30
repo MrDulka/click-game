@@ -1,10 +1,14 @@
-body { text-align: center; background-color: #F0F0F0; }
+body {
+  text-align: center;
+  background-color: #F0F0F0;
+  font-family: "Montserrat", sans-serif;
+}
 
 .header { background-color: #0077CC; color: #FFFFFF; }
 
 .footer { font-style: italic; }
 
-.home-container {
+.container {
   border: 3px solid #0077CC;
   border-radius: 5px;
   background-color: #FFFFFF;
@@ -31,16 +35,17 @@ td { font-weight: bold; }
 
 .team-select { padding: 10px; }
 
-.team-select > button {
-  width: 40%;
+.btn {
   background-color: #0077CC;
   color: #FFFFFF;
   border-radius: 5px;
   font-size: 3em;
   padding: 10px;
-  margin: 10px;
   font-weight: bold;
 }
+
+.btn-small { width: 40%; }
+.btn-big { width: 100%; }
 
 .team-select > input, label {
   width: 40%;
@@ -52,4 +57,33 @@ td { font-weight: bold; }
 .team-select > input {
   border: 1px solid #C0C0C0;
   border-radius: 5px;
+}
+
+h2 { font-weight: normal; }
+
+.session-link { margin: 10px; }
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.clicks-label {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 1em;
+  margin-bottom: 0;
+}
+
+.clicks-score {
+  font-size: 3em;
+  color: #0077CC;
+  font-weight: bold;
+  margin-top: 0;
 }
