@@ -1250,7 +1250,7 @@ var postClick = exports.postClick = function postClick(team, session) {
     }, function (err) {
       return dispatch(errorClick(team, session));
     }).then(function (data) {
-      if (!data) {
+      if (data.type === ERROR_CLICK) {
         return;
       }
       dispatch(receiveClick(data.team_clicks, data.your_clicks, team, session));

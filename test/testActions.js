@@ -1,8 +1,12 @@
 import { requestClick, receiveClick, errorClick, requestLeaderboard,
-  receiveLeaderboard, setSession } from '../src/actions';
+  receiveLeaderboard, setSession, fetchLeaderboard, postClick }
+  from '../src/actions';
 import { expect } from 'chai';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import fetchMock from 'fetch-mock';
 
-describe('Testing synchronous actions', () => {
+describe('Testing synchronous action creators', () => {
   it('requestClick should create a REQUEST_CLICK action', () => {
     expect(requestClick('Best team', 'iamsorandomlol')).to.deep.equal({
       type: 'REQUEST_CLICK',
@@ -52,6 +56,87 @@ describe('Testing synchronous actions', () => {
       team: 'What a team, wow',
       id: 'asdfg'
     });
+  });
+
+});
+
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
+
+describe('Testing asynchronous action creators', () => {
+  afterEach(() => {
+    fetchMock.reset()
+    fetchMock.restore()
+  });
+
+
+  it('fetchLeaderboard should create request and receive', () => {
+    fetchMock.get('*', [{ team: 'dabest', clicks:1000 }]);
+    const store = mockStore({});
+
+    const expectedActions = [
+      { type: 'REQUEST_LEADERBOARD' },
+      {
+        type: 'RECEIVE_LEADERBOARD',
+        leaderboard: [{
+          clicks: 1000,
+          name: 'dabest'
+        }]
+      }
+    ];
+
+    return store.dispatch(fetchLeaderboard())
+      .then(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+      });
+  });
+
+  it('postClick success should create request and receive', () => {
+    fetchMock.post('*', { your_clicks: 10, team_clicks: 500});
+    const store = mockStore({});
+
+    const expectedActions = [
+      {
+        type: 'REQUEST_CLICK',
+        team: 'No1',
+        session: 'random'
+      },
+      {
+        type: 'RECEIVE_CLICK',
+        teamClicks: 500,
+        sessionClicks: 10,
+        team: 'No1',
+        session: 'random'
+      }
+    ];
+
+    return store.dispatch(postClick('No1', 'random'))
+      .then(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+      });
+  });
+
+  it('postClick error should create request and error', () => {
+    fetchMock.post('*', { throws: 'Error happened'});
+    const store = mockStore({});
+
+    const expectedActions = [
+      {
+        type: 'REQUEST_CLICK',
+        team: 'No1',
+        session: 'random'
+      },
+      {
+        type: 'ERROR_CLICK',
+        team: 'No1',
+        session: 'random'
+      }
+    ];
+
+    return store.dispatch(postClick('No1', 'random'))
+      .then(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+      });
   });
 
 });

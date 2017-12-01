@@ -85,7 +85,7 @@ export const postClick = (team, session) => dispatch => {
     (err) => dispatch(errorClick(team, session))
   )
   .then(data => {
-    if(!data) {
+    if(data.type === ERROR_CLICK) {
       return;
     }
     dispatch(receiveClick(data.team_clicks, data.your_clicks, team, session));
