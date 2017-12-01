@@ -25754,7 +25754,8 @@ var GetLeaderboard = function (_React$Component) {
     value: function render() {
       var _props = this.props,
           fetchingLeaderboard = _props.fetchingLeaderboard,
-          leaderboard = _props.leaderboard;
+          leaderboard = _props.leaderboard,
+          team = _props.team;
 
       var isEmpty = leaderboard.length === 0;
       return _react2.default.createElement(
@@ -25769,7 +25770,7 @@ var GetLeaderboard = function (_React$Component) {
           'h2',
           null,
           'Not loaded yet'
-        ) : _react2.default.createElement(_Leaderboard2.default, { leaderboard: leaderboard })
+        ) : _react2.default.createElement(_Leaderboard2.default, { leaderboard: leaderboard, selectedTeam: team })
       );
     }
   }]);
@@ -25777,10 +25778,11 @@ var GetLeaderboard = function (_React$Component) {
   return GetLeaderboard;
 }(_react2.default.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
+var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     leaderboard: state.leaderboard,
-    fetchingLeaderboard: state.fetchingLeaderboard
+    fetchingLeaderboard: state.fetchingLeaderboard,
+    team: ownProps.team
   };
 };
 
@@ -25804,33 +25806,62 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Leaderboard = function Leaderboard(_ref) {
-  var leaderboard = _ref.leaderboard;
+  var leaderboard = _ref.leaderboard,
+      selectedTeam = _ref.selectedTeam;
 
   var sortedLeaderboard = leaderboard.sort(function (a, b) {
     return b.clicks - a.clicks;
   });
-  var topTen = sortedLeaderboard.slice(0, 10);
-  var teamScores = topTen.map(function (team, index) {
-    return _react2.default.createElement(
-      "tr",
-      { key: team.name },
-      _react2.default.createElement(
-        "td",
-        null,
-        index + 1
-      ),
-      _react2.default.createElement(
-        "td",
-        { className: "team" },
-        team.name
-      ),
-      _react2.default.createElement(
-        "td",
-        { className: "clicks" },
-        team.clicks
-      )
-    );
-  });
+  var fromIndex = void 0,
+      toIndex = void 0;
+
+  if (selectedTeam) {
+    var teamIndex = sortedLeaderboard.findIndex(function (team) {
+      return team.name === selectedTeam;
+    });
+    var length = sortedLeaderboard.length;
+    if (teamIndex <= 3) {
+      fromIndex = 0;
+      toIndex = 6;
+    } else if (teamIndex >= length - 3) {
+      fromIndex = length - 7;
+      toIndex = length - 1;
+    } else {
+      fromIndex = teamIndex - 3;
+      toIndex = teamIndex + 3;
+    }
+  } else {
+    fromIndex = 0;
+    toIndex = 9;
+  }
+
+  var teamScores = sortedLeaderboard.reduce(function (accumulator, team, index) {
+    var id = teamIndex === index ? "selected-team-row" : "";
+
+    if (index >= fromIndex && index <= toIndex) {
+      return accumulator.concat(_react2.default.createElement(
+        "tr",
+        { key: team.name, id: id },
+        _react2.default.createElement(
+          "td",
+          null,
+          index + 1
+        ),
+        _react2.default.createElement(
+          "td",
+          { className: "team" },
+          team.name
+        ),
+        _react2.default.createElement(
+          "td",
+          { className: "clicks" },
+          team.clicks
+        )
+      ));
+    } else {
+      return accumulator;
+    }
+  }, []);
 
   return _react2.default.createElement(
     "table",
@@ -26063,7 +26094,7 @@ var Session = function Session(_ref) {
   var match = _ref.match;
   var team = match.params.team;
 
-  var link = encodeURIComponent("clicking-game.herokuapp.com/" + team);
+  var link = encodeURI("clicking-game.herokuapp.com/" + team);
   return _react2.default.createElement(
     _BackgroundPage2.default,
     null,
@@ -26088,7 +26119,7 @@ var Session = function Session(_ref) {
       'div',
       { className: 'container' },
       _react2.default.createElement(_SmartClicker2.default, { team: team }),
-      _react2.default.createElement(_GetLeaderboard2.default, null)
+      _react2.default.createElement(_GetLeaderboard2.default, { team: team })
     )
   );
 };
@@ -26418,7 +26449,7 @@ exports = module.exports = __webpack_require__(127)(undefined);
 
 
 // module
-exports.push([module.i, "body {\r\n  text-align: center;\r\n  background-color: #F0F0F0;\r\n  font-family: \"Montserrat\", sans-serif;\r\n}\r\n\r\n.header { background-color: #0077CC; color: #FFFFFF; }\r\n\r\n.footer { font-style: italic; }\r\n\r\n.container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 70%;\r\n  margin: auto;\r\n  padding: 20px;\r\n}\r\n\r\ntable { width: 100%; border-collapse: collapse; }\r\n\r\n.team { text-align: left; }\r\n\r\n.clicks { text-align: right; }\r\n\r\nth { color: #C0C0C0; font-size: 0.7em; }\r\n\r\ntbody > tr:nth-child(even) { background: #EBF5FB; }\r\n\r\ntbody > tr:nth-child(odd) { background: #D6EAF8; }\r\n\r\ntd, th { padding: 5px; }\r\n\r\ntd { font-weight: bold; }\r\n\r\n.team-select { padding: 10px; }\r\n\r\n.btn {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  border-radius: 5px;\r\n  font-size: 3em;\r\n  padding: 10px;\r\n  font-weight: bold;\r\n}\r\n\r\n.btn-small { width: 40%; }\r\n.btn-big { width: 100%; }\r\n\r\n.team-select > input, label {\r\n  width: 40%;\r\n  float: left;\r\n  clear: left;\r\n  position: relative;\r\n}\r\n\r\n.team-select > input {\r\n  border: 1px solid #C0C0C0;\r\n  border-radius: 5px;\r\n}\r\n\r\nh2 { font-weight: normal; }\r\n\r\n.session-link { margin: 10px; }\r\n\r\n.column {\r\n    float: left;\r\n    width: 50%;\r\n}\r\n\r\n.row:after {\r\n    content: \"\";\r\n    display: table;\r\n    clear: both;\r\n}\r\n\r\n.clicks-label {\r\n  font-style: italic;\r\n  font-weight: normal;\r\n  font-size: 1em;\r\n  margin-bottom: 0;\r\n}\r\n\r\n.clicks-score {\r\n  font-size: 3em;\r\n  color: #0077CC;\r\n  font-weight: bold;\r\n  margin-top: 0;\r\n}\r\n", ""]);
+exports.push([module.i, "body {\r\n  text-align: center;\r\n  background-color: #F0F0F0;\r\n  font-family: \"Montserrat\", sans-serif;\r\n}\r\n\r\n.header { background-color: #0077CC; color: #FFFFFF; }\r\n\r\n.footer { font-style: italic; }\r\n\r\n.container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 70%;\r\n  margin: auto;\r\n  padding: 20px;\r\n}\r\n\r\ntable { width: 100%; border-collapse: collapse; }\r\n\r\n.team { text-align: left; }\r\n\r\n.clicks { text-align: right; }\r\n\r\nth { color: #C0C0C0; font-size: 0.7em; }\r\n\r\ntbody > tr:nth-child(even) { background: #EBF5FB; }\r\n\r\ntbody > tr:nth-child(odd) { background: #D6EAF8; }\r\n\r\ntd, th { padding: 5px; }\r\n\r\ntd { font-weight: bold; }\r\n\r\n.team-select { padding: 10px; }\r\n\r\n.btn {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  border-radius: 5px;\r\n  font-size: 3em;\r\n  padding: 10px;\r\n  font-weight: bold;\r\n}\r\n\r\n.btn-small { width: 40%; }\r\n.btn-big { width: 100%; }\r\n\r\n.team-select > input, label {\r\n  width: 40%;\r\n  float: left;\r\n  clear: left;\r\n  position: relative;\r\n}\r\n\r\n.team-select > input {\r\n  border: 1px solid #C0C0C0;\r\n  border-radius: 5px;\r\n}\r\n\r\nh2 { font-weight: normal; }\r\n\r\n.session-link { margin: 10px; }\r\n\r\n.column {\r\n    float: left;\r\n    width: 50%;\r\n}\r\n\r\n.row:after {\r\n    content: \"\";\r\n    display: table;\r\n    clear: both;\r\n}\r\n\r\n.clicks-label {\r\n  font-style: italic;\r\n  font-weight: normal;\r\n  font-size: 1em;\r\n  margin-bottom: 0;\r\n}\r\n\r\n.clicks-score {\r\n  font-size: 3em;\r\n  color: #0077CC;\r\n  font-weight: bold;\r\n  margin-top: 0;\r\n}\r\n\r\n#selected-team-row {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  font-size: 3em;\r\n  font-weight: bold;\r\n}\r\n", ""]);
 
 // exports
 

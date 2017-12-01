@@ -5,7 +5,7 @@ import GetLeaderboard from '../containers/GetLeaderboard';
 
 const Session = ({ match }) => {
   let { team } = match.params;
-  let link = encodeURIComponent("clicking-game.herokuapp.com/" + team);
+  let link = encodeURI("clicking-game.herokuapp.com/" + team);
   return (
     <BackgroundPage>
       <h2>Clicking for team <strong>{team}</strong></h2>
@@ -16,7 +16,7 @@ const Session = ({ match }) => {
       </p>
       <div className = "container">
         <SmartClicker team = {team}/>
-        <GetLeaderboard />
+        <GetLeaderboard team = {team}/>
       </div>
     </BackgroundPage>
   )

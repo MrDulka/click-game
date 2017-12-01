@@ -9,7 +9,7 @@ class GetLeaderboard extends React.Component {
   }
 
   render() {
-    const { fetchingLeaderboard, leaderboard } = this.props;
+    const { fetchingLeaderboard, leaderboard, team } = this.props;
     const isEmpty = leaderboard.length === 0;
     return (
       <div>
@@ -18,7 +18,7 @@ class GetLeaderboard extends React.Component {
         }
         {isEmpty ?
           <h2>Not loaded yet</h2>
-          : <Leaderboard leaderboard = {leaderboard}/>
+          : <Leaderboard leaderboard = {leaderboard} selectedTeam = {team} />
         }
       </div>
     )
@@ -27,10 +27,11 @@ class GetLeaderboard extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     leaderboard : state.leaderboard,
-    fetchingLeaderboard: state.fetchingLeaderboard
+    fetchingLeaderboard: state.fetchingLeaderboard,
+    team: ownProps.team
   }
 }
 
