@@ -1,6 +1,16 @@
 import { REQUEST_CLICK, RECEIVE_CLICK, ERROR_CLICK,
 REQUEST_LEADERBOARD, RECEIVE_LEADERBOARD, SET_SESSION } from '../actions';
 
+/*
+optimisticClick aims to provide better responsivity. It assumes that the request
+to server will be successfull and updates the state on the client immediately,
+without waiting for the response from the server.
+If there is an error and the server response announces an error, it undos the changes
+that were made optimistically, making the actions "in reverse".
+
+Another option would be to update the state after the response from server,
+it should be enough to write a pessimisticClick reducer for this.
+*/
 const optimisticClick = (state, action) => {
   switch(action.type) {
     case REQUEST_CLICK: {
@@ -69,8 +79,6 @@ const optimisticClick = (state, action) => {
       return state;
   }
 }
-
-
 
 export const reducer = (state = {}, action) => {
   switch(action.type) {

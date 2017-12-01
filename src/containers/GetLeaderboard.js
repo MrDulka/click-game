@@ -11,19 +11,18 @@ class GetLeaderboard extends React.Component {
   render() {
     const { fetchingLeaderboard, leaderboard, team } = this.props;
     const isEmpty = leaderboard.length === 0;
+
     return (
       <div>
         {fetchingLeaderboard &&
           <h2>Updating...</h2>
         }
         {isEmpty ?
-          <h2>Not loaded yet</h2>
+          <h2>Leaderboard not loaded yet</h2>
           : <Leaderboard leaderboard = {leaderboard} selectedTeam = {team} />
         }
       </div>
     )
-
-
   }
 }
 

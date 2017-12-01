@@ -4,6 +4,9 @@ const Leaderboard = ({ leaderboard, selectedTeam }) => {
   let sortedLeaderboard = leaderboard.sort((a, b) => b.clicks - a.clicks);
   let fromIndex, toIndex;
 
+  /*If there is a selected team, show always 7 teams. The selected team should
+  be in the middle, but can be adjusted if it's directly on top or bottom of leaderboard.
+  If selected team is undefined, show top 10. */
   if(selectedTeam) {
     var teamIndex = sortedLeaderboard.findIndex((team) => team.name === selectedTeam);
     let length = sortedLeaderboard.length;

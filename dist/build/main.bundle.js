@@ -1221,6 +1221,7 @@ var receiveLeaderboard = exports.receiveLeaderboard = function receiveLeaderboar
 var fetchLeaderboard = exports.fetchLeaderboard = function fetchLeaderboard() {
   return function (dispatch) {
     dispatch(requestLeaderboard());
+
     return fetch(LEADERBOARD_API_URL).then(function (response) {
       return response.json();
     }).then(function (data) {
@@ -1238,6 +1239,7 @@ var fetchLeaderboard = exports.fetchLeaderboard = function fetchLeaderboard() {
 var postClick = exports.postClick = function postClick(team, session) {
   return function (dispatch) {
     dispatch(requestClick(team, session));
+
     return fetch(CLICK_API_URL, {
       method: 'POST',
       headers: {
@@ -21425,6 +21427,10 @@ var _Session2 = _interopRequireDefault(_Session);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/*
+react-router is the source of truth for the url, but maybe this should be included
+  in the redux store instead
+*/
 var Root = function Root(_ref) {
   var store = _ref.store;
   return _react2.default.createElement(
@@ -25764,6 +25770,7 @@ var GetLeaderboard = function (_React$Component) {
           team = _props.team;
 
       var isEmpty = leaderboard.length === 0;
+
       return _react2.default.createElement(
         'div',
         null,
@@ -25775,7 +25782,7 @@ var GetLeaderboard = function (_React$Component) {
         isEmpty ? _react2.default.createElement(
           'h2',
           null,
-          'Not loaded yet'
+          'Leaderboard not loaded yet'
         ) : _react2.default.createElement(_Leaderboard2.default, { leaderboard: leaderboard, selectedTeam: team })
       );
     }
@@ -25821,6 +25828,9 @@ var Leaderboard = function Leaderboard(_ref) {
   var fromIndex = void 0,
       toIndex = void 0;
 
+  /*If there is a selected team, show always 7 teams. The selected team should
+  be in the middle, but can be adjusted if it's directly on top or bottom of leaderboard.
+  If selected team is undefined, show top 10. */
   if (selectedTeam) {
     var teamIndex = sortedLeaderboard.findIndex(function (team) {
       return team.name === selectedTeam;
@@ -26315,6 +26325,16 @@ exports.reducer = undefined;
 
 var _actions = __webpack_require__(16);
 
+/*
+optimisticClick aims to provide better responsivity. It assumes that the request
+to server will be successfull and updates the state on the client immediately,
+without waiting for the response from the server.
+If there is an error and the server response announces an error, it undos the changes
+that were made optimistically, making the actions "in reverse".
+
+Another option would be to update the state after the response from server,
+it should be enough to write a pessimisticClick reducer for this.
+*/
 var optimisticClick = function optimisticClick(state, action) {
   switch (action.type) {
     case _actions.REQUEST_CLICK:
@@ -26461,7 +26481,7 @@ exports = module.exports = __webpack_require__(127)(undefined);
 
 
 // module
-exports.push([module.i, "body {\r\n  text-align: center;\r\n  background-color: #F0F0F0;\r\n  font-family: \"Montserrat\", sans-serif;\r\n}\r\n\r\n.header { background-color: #0077CC; color: #FFFFFF; }\r\n\r\n.footer { font-style: italic; }\r\n\r\n.container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 70%;\r\n  margin: auto;\r\n  padding: 20px;\r\n  max-width: 700px;\r\n}\r\n\r\ntable { width: 100%; border-collapse: collapse; margin-top: 30px;}\r\n\r\n.team { text-align: left; }\r\n\r\n.clicks { text-align: right; }\r\n\r\nth { color: #C0C0C0; font-size: 0.7em; }\r\n\r\ntbody > tr:nth-child(even) { background: #EBF5FB; }\r\n\r\ntbody > tr:nth-child(odd) { background: #D6EAF8; }\r\n\r\ntd, th { padding: 5px; }\r\n\r\ntd { font-weight: bold; }\r\n\r\n.team-select { padding: 10px; }\r\n\r\nbutton {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  border-radius: 5px;\r\n  font-size: 3em;\r\n  padding: 10px;\r\n  font-weight: bold;\r\n  width: 100%;\r\n}\r\n\r\ninput {\r\n  border: 1px solid #C0C0C0;\r\n  border-radius: 5px;\r\n  font-style: italic;\r\n}\r\n\r\n#team-name { width: 80% ;}\r\n\r\nh2 { font-weight: normal; }\r\n\r\n.session-link { margin: 10px; }\r\n\r\n.column {\r\n    float: left;\r\n    width: 50%;\r\n}\r\n\r\n.row:after {\r\n    content: \"\";\r\n    display: table;\r\n    clear: both;\r\n}\r\n\r\n.clicks-label {\r\n  font-style: italic;\r\n  font-weight: normal;\r\n  font-size: 1em;\r\n  margin-bottom: 0;\r\n}\r\n\r\n.clicks-score {\r\n  font-size: 3em;\r\n  color: #0077CC;\r\n  font-weight: bold;\r\n  margin: 0 0 0 0;\r\n}\r\n\r\n#selected-team-row {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  font-size: 3em;\r\n  font-weight: bold;\r\n}\r\n\r\nblockquote { font-style: italic; display: inline-block; }\r\nblockquote > footer { text-align: right; margin-top: 10px; }\r\n", ""]);
+exports.push([module.i, "body {\r\n  text-align: center;\r\n  background-color: #F0F0F0;\r\n  font-family: \"Montserrat\", sans-serif;\r\n}\r\n\r\n.header { background-color: #0077CC; color: #FFFFFF; }\r\n\r\n.footer { font-style: italic; }\r\n\r\n.container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 70%;\r\n  margin: auto;\r\n  padding: 20px;\r\n  max-width: 700px;\r\n}\r\n\r\ntable { width: 100%; border-collapse: collapse; margin-top: 30px;}\r\n\r\n.team { text-align: left; width: 40%; }\r\n\r\n.clicks { text-align: right; width: 40%; }\r\n\r\nth { color: #C0C0C0; font-size: 0.7em; }\r\n\r\ntbody > tr:nth-child(even) { background: #EBF5FB; }\r\n\r\ntbody > tr:nth-child(odd) { background: #D6EAF8; }\r\n\r\ntd, th { padding: 5px; }\r\n\r\ntd { font-weight: bold; }\r\n\r\n.team-select { padding: 10px; }\r\n\r\nbutton {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  border-radius: 5px;\r\n  font-size: 3em;\r\n  padding: 10px;\r\n  font-weight: bold;\r\n  width: 100%;\r\n}\r\n\r\ninput {\r\n  border: 1px solid #C0C0C0;\r\n  border-radius: 5px;\r\n  font-style: italic;\r\n}\r\n\r\n#team-name { width: 80% ;}\r\n\r\nh2 { font-weight: normal; }\r\n\r\n.session-link { margin: 10px; }\r\n\r\n.column {\r\n    float: left;\r\n    width: 50%;\r\n}\r\n\r\n.row:after {\r\n    content: \"\";\r\n    display: table;\r\n    clear: both;\r\n}\r\n\r\n.clicks-label {\r\n  font-style: italic;\r\n  font-weight: normal;\r\n  font-size: 1em;\r\n  margin-bottom: 0;\r\n}\r\n\r\n.clicks-score {\r\n  font-size: 3em;\r\n  color: #0077CC;\r\n  font-weight: bold;\r\n  margin: 0 0 0 0;\r\n}\r\n\r\n#selected-team-row {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  font-size: 3em;\r\n  font-weight: bold;\r\n}\r\n\r\nblockquote { font-style: italic; display: inline-block; }\r\nblockquote > footer { text-align: right; margin-top: 10px; }\r\n", ""]);
 
 // exports
 

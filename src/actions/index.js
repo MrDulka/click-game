@@ -57,6 +57,7 @@ export const receiveLeaderboard = (leaderboard) => {
 
 export const fetchLeaderboard = () => dispatch => {
   dispatch(requestLeaderboard());
+
   return fetch(LEADERBOARD_API_URL)
   .then(response => response.json())
   .then(data => {
@@ -72,6 +73,7 @@ export const fetchLeaderboard = () => dispatch => {
 
 export const postClick = (team, session) => dispatch => {
   dispatch(requestClick(team, session));
+
   return fetch(CLICK_API_URL, {
     method: 'POST',
     headers: {
