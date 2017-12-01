@@ -1,5 +1,7 @@
 import React from 'react';
 import BackgroundPage from './BackgroundPage';
+import SmartClicker from '../containers/SmartClicker';
+import GetLeaderboard from '../containers/GetLeaderboard';
 
 const Session = ({ match }) => {
   let { team } = match.params;
@@ -12,6 +14,10 @@ const Session = ({ match }) => {
         <input type="text" value = {link} readOnly size={link.length}
           className = "session-link"/>
       </p>
+      <div className = "container">
+        <SmartClicker team = {team}/>
+        <GetLeaderboard />
+      </div>
     </BackgroundPage>
   )
 }
