@@ -33,7 +33,7 @@ const optimisticClick = (state, action) => {
         session: updatedSession
       });
     }
-    
+
     case ERROR_CLICK: {
       let newTeamIndex = -1;
       let updatedLeaderboard = state.leaderboard.map((team, index) => {
@@ -50,7 +50,7 @@ const optimisticClick = (state, action) => {
         return team;
       });
       if(newTeamIndex > -1) {
-        updatedLeaderboard.splice(index, 1)
+        updatedLeaderboard.splice(newTeamIndex, 1)
       }
 
       let updatedSession = state.session;
@@ -73,8 +73,6 @@ const optimisticClick = (state, action) => {
 
 
 export const reducer = (state = {}, action) => {
-  console.log(action);
-  console.log(state);
   switch(action.type) {
     case REQUEST_LEADERBOARD:
       return Object.assign({}, state, {
@@ -88,7 +86,7 @@ export const reducer = (state = {}, action) => {
       });
 
     case SET_SESSION:
-      let sessionClicks = state.session.id === action.session ? state.session.sessionClicks : 0;
+      let sessionClicks = state.session.id === action.id ? state.session.sessionClicks : 0;
       return Object.assign({}, state, {
         session: {
           id: action.id,

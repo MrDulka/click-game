@@ -1163,7 +1163,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var REQUEST_CLICK = exports.REQUEST_CLICK = 'REQUEST_CLICK';
 var RECEIVE_CLICK = exports.RECEIVE_CLICK = 'RECEIVE_CLICK';
-var REROLL_CLICK = exports.REROLL_CLICK = 'REROLL_CLICK';
+var ERROR_CLICK = exports.ERROR_CLICK = 'ERROR_CLICK';
 var REQUEST_LEADERBOARD = exports.REQUEST_LEADERBOARD = 'REQUEST_LEADERBOARD';
 var RECEIVE_LEADERBOARD = exports.RECEIVE_LEADERBOARD = 'RECEIVE_LEADERBOARD';
 var SET_SESSION = exports.SET_SESSION = 'SET_SESSION';
@@ -1189,9 +1189,9 @@ var receiveClick = exports.receiveClick = function receiveClick(teamClicks, sess
   };
 };
 
-var rerollClick = exports.rerollClick = function rerollClick(team, session) {
+var errorClick = exports.errorClick = function errorClick(team, session) {
   return {
-    type: REROLL_CLICK,
+    type: ERROR_CLICK,
     team: team,
     session: session
   };
@@ -1248,7 +1248,7 @@ var postClick = exports.postClick = function postClick(team, session) {
     }).then(function (response) {
       return response.json();
     }, function (err) {
-      return dispatch(rerollClick(team, session));
+      return dispatch(errorClick(team, session));
     }).then(function (data) {
       if (!data) {
         return;
@@ -4109,11 +4109,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var initialState = {
   leaderboard: [],
   fetchingLeaderboard: false,
-  session: {
-    id: "random string",
-    team: "John Doe",
-    sessionClicks: 12
-  }
+  session: {}
 };
 
 var store = (0, _redux.createStore)(_index.reducer, initialState, (0, _redux.applyMiddleware)(_reduxThunk2.default));
@@ -26353,7 +26349,7 @@ var optimisticClick = function optimisticClick(state, action) {
         });
       }
 
-    case _actions.REROLL_CLICK:
+    case _actions.ERROR_CLICK:
       {
         var newTeamIndex = -1;
         var _updatedLeaderboard = state.leaderboard.map(function (team, index) {
@@ -26369,7 +26365,7 @@ var optimisticClick = function optimisticClick(state, action) {
           return team;
         });
         if (newTeamIndex > -1) {
-          _updatedLeaderboard.splice(index, 1);
+          _updatedLeaderboard.splice(newTeamIndex, 1);
         }
 
         var _updatedSession = state.session;
@@ -26393,8 +26389,6 @@ var reducer = exports.reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
 
-  console.log(action);
-  console.log(state);
   switch (action.type) {
     case _actions.REQUEST_LEADERBOARD:
       return Object.assign({}, state, {
@@ -26408,7 +26402,7 @@ var reducer = exports.reducer = function reducer() {
       });
 
     case _actions.SET_SESSION:
-      var sessionClicks = state.session.id === action.session ? state.session.sessionClicks : 0;
+      var sessionClicks = state.session.id === action.id ? state.session.sessionClicks : 0;
       return Object.assign({}, state, {
         session: {
           id: action.id,
@@ -26419,7 +26413,7 @@ var reducer = exports.reducer = function reducer() {
 
     case _actions.REQUEST_CLICK:
     case _actions.RECEIVE_CLICK:
-    case _actions.REROLL_CLICK:
+    case _actions.ERROR_CLICK:
       return optimisticClick(state, action);
 
     default:

@@ -9,11 +9,7 @@ import thunk from 'redux-thunk';
 let initialState = {
   leaderboard: [],
   fetchingLeaderboard: false,
-  session: {
-    id: "random string",
-    team: "John Doe",
-    sessionClicks: 12
-  }
+  session: {}  
 }
 
 let store = createStore(reducer, initialState, applyMiddleware(thunk));
