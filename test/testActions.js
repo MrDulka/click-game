@@ -1,19 +1,48 @@
-import { doClick, setLeaderboard, setSession } from '../src/actions/index';
+import { requestClick, receiveClick, errorClick, requestLeaderboard,
+  receiveLeaderboard, setSession } from '../src/actions';
 import { expect } from 'chai';
 
-describe('Testing actions', () => {
-  it('doClick should create a CLICK action', () => {
-    expect(doClick('Best team', 'iamsorandomlol')).to.deep.equal({
-      type: 'CLICK',
+describe('Testing synchronous actions', () => {
+  it('requestClick should create a REQUEST_CLICK action', () => {
+    expect(requestClick('Best team', 'iamsorandomlol')).to.deep.equal({
+      type: 'REQUEST_CLICK',
       team: 'Best team',
       session: 'iamsorandomlol'
     });
   });
 
-  it('setLeaderboard should create a SET_LEADERBOARD action', () => {
-    expect(setLeaderboard([{name: "Your mom's team"}])).to.deep.equal({
-      type: 'SET_LEADERBOARD',
-      leaderboard: [{name: "Your mom's team"}]
+  it('receiveClick should create a RECEIVE_CLICK action', () => {
+    expect(receiveClick(510, 10, 'Marvelous team', 'random-string'))
+    .to.deep.equal({
+      type: 'RECEIVE_CLICK',
+      team: 'Marvelous team',
+      session: 'random-string',
+      teamClicks: 510,
+      sessionClicks: 10
+    });
+  });
+
+  it('errorClick should create a ERROR_CLICK action', () => {
+    expect(errorClick('Awesome team', 'random')).to.deep.equal({
+      type: 'ERROR_CLICK',
+      team: 'Awesome team',
+      session: 'random'
+    });
+  });
+
+  it('requestLeaderboard should create a REQUEST_LEADERBOARD action',
+    () => {
+    expect(requestLeaderboard()).to.deep.equal({
+      type: 'REQUEST_LEADERBOARD'
+    });
+  });
+
+  it('receiveLeaderboard should create a RECEIVE_LEADERBOARD action',
+    () => {
+    expect(receiveLeaderboard([{name: 'My team', clicks: 1000}]))
+    .to.deep.equal({
+      type: 'RECEIVE_LEADERBOARD',
+      leaderboard: [{name: 'My team', clicks: 1000}]
     });
   });
 
