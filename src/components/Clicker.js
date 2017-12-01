@@ -2,7 +2,7 @@ import React from 'react';
 
 const Clicker = ({ doClick, sessionClicks, teamClicks }) => {
   return (
-    <div className = "container">
+    <div>
       <button className = "btn btn-big" onClick = {doClick}>CLICK!</button>
       <div className="row">
         <div className="column">

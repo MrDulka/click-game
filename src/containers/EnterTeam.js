@@ -23,8 +23,6 @@ class EnterTeam extends React.Component {
     if (!this.state.text){
       return
     }
-    let randomString = Math.random().toString();
-    this.props.dispatch(setSession(this.state.text, randomString));
     this.props.history.push('/'+this.state.text);
     this.setState({text: ''});
   }

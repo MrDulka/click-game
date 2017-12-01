@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
 import React from 'react';
-import Leaderboard from '../components/Leaderboard';
+import { connect } from 'react-redux';
 import { fetchLeaderboard } from '../actions';
+import Leaderboard from '../components/Leaderboard';
 
 class GetLeaderboard extends React.Component {
   componentDidMount() {
@@ -26,7 +26,6 @@ class GetLeaderboard extends React.Component {
 
   }
 }
-
 
 const mapStateToProps = state => {
   return {
