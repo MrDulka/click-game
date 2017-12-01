@@ -25687,6 +25687,16 @@ var Home = function Home() {
     _BackgroundPage2.default,
     null,
     _react2.default.createElement(
+      'blockquote',
+      null,
+      '"Let\'s admit it, you would be clicking randomly on web anyway"',
+      _react2.default.createElement(
+        'footer',
+        null,
+        '\u2014 Albert Einstein'
+      )
+    ),
+    _react2.default.createElement(
       'div',
       { className: 'container' },
       _react2.default.createElement(_EnterTeam2.default, null),
@@ -26000,18 +26010,26 @@ var TeamSelect = function TeamSelect(_ref) {
 
   return _react2.default.createElement(
     "div",
-    { className: "team-select" },
+    { className: "row" },
     _react2.default.createElement(
-      "label",
-      { htmlFor: "team-name" },
-      "Enter your team name:"
+      "div",
+      { className: "column" },
+      _react2.default.createElement(
+        "label",
+        { htmlFor: "team-name" },
+        "Enter your team name:"
+      ),
+      _react2.default.createElement("input", { type: "text", value: text, onChange: onChange, id: "team-name",
+        placeholder: "Your mom" })
     ),
-    _react2.default.createElement("input", { type: "text", value: text, onChange: onChange, id: "team-name",
-      placeholder: "Your mom" }),
     _react2.default.createElement(
-      "button",
-      { onClick: submitTeam, className: "btn btn-small" },
-      "CLICK!"
+      "div",
+      { className: "column" },
+      _react2.default.createElement(
+        "button",
+        { onClick: submitTeam },
+        "CLICK!"
+      )
     )
   );
 };
@@ -26247,7 +26265,7 @@ var Clicker = function Clicker(_ref) {
     null,
     _react2.default.createElement(
       "button",
-      { className: "btn btn-big", onClick: doClick },
+      { onClick: doClick },
       "CLICK!"
     ),
     _react2.default.createElement(
@@ -26449,7 +26467,7 @@ exports = module.exports = __webpack_require__(127)(undefined);
 
 
 // module
-exports.push([module.i, "body {\r\n  text-align: center;\r\n  background-color: #F0F0F0;\r\n  font-family: \"Montserrat\", sans-serif;\r\n}\r\n\r\n.header { background-color: #0077CC; color: #FFFFFF; }\r\n\r\n.footer { font-style: italic; }\r\n\r\n.container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 70%;\r\n  margin: auto;\r\n  padding: 20px;\r\n}\r\n\r\ntable { width: 100%; border-collapse: collapse; }\r\n\r\n.team { text-align: left; }\r\n\r\n.clicks { text-align: right; }\r\n\r\nth { color: #C0C0C0; font-size: 0.7em; }\r\n\r\ntbody > tr:nth-child(even) { background: #EBF5FB; }\r\n\r\ntbody > tr:nth-child(odd) { background: #D6EAF8; }\r\n\r\ntd, th { padding: 5px; }\r\n\r\ntd { font-weight: bold; }\r\n\r\n.team-select { padding: 10px; }\r\n\r\n.btn {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  border-radius: 5px;\r\n  font-size: 3em;\r\n  padding: 10px;\r\n  font-weight: bold;\r\n}\r\n\r\n.btn-small { width: 40%; }\r\n.btn-big { width: 100%; }\r\n\r\n.team-select > input, label {\r\n  width: 40%;\r\n  float: left;\r\n  clear: left;\r\n  position: relative;\r\n}\r\n\r\n.team-select > input {\r\n  border: 1px solid #C0C0C0;\r\n  border-radius: 5px;\r\n}\r\n\r\nh2 { font-weight: normal; }\r\n\r\n.session-link { margin: 10px; }\r\n\r\n.column {\r\n    float: left;\r\n    width: 50%;\r\n}\r\n\r\n.row:after {\r\n    content: \"\";\r\n    display: table;\r\n    clear: both;\r\n}\r\n\r\n.clicks-label {\r\n  font-style: italic;\r\n  font-weight: normal;\r\n  font-size: 1em;\r\n  margin-bottom: 0;\r\n}\r\n\r\n.clicks-score {\r\n  font-size: 3em;\r\n  color: #0077CC;\r\n  font-weight: bold;\r\n  margin-top: 0;\r\n}\r\n\r\n#selected-team-row {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  font-size: 3em;\r\n  font-weight: bold;\r\n}\r\n", ""]);
+exports.push([module.i, "body {\r\n  text-align: center;\r\n  background-color: #F0F0F0;\r\n  font-family: \"Montserrat\", sans-serif;\r\n}\r\n\r\n.header { background-color: #0077CC; color: #FFFFFF; }\r\n\r\n.footer { font-style: italic; }\r\n\r\n.container {\r\n  border: 3px solid #0077CC;\r\n  border-radius: 5px;\r\n  background-color: #FFFFFF;\r\n  width: 70%;\r\n  margin: auto;\r\n  padding: 20px;\r\n  max-width: 700px;\r\n}\r\n\r\ntable { width: 100%; border-collapse: collapse; margin-top: 30px;}\r\n\r\n.team { text-align: left; }\r\n\r\n.clicks { text-align: right; }\r\n\r\nth { color: #C0C0C0; font-size: 0.7em; }\r\n\r\ntbody > tr:nth-child(even) { background: #EBF5FB; }\r\n\r\ntbody > tr:nth-child(odd) { background: #D6EAF8; }\r\n\r\ntd, th { padding: 5px; }\r\n\r\ntd { font-weight: bold; }\r\n\r\n.team-select { padding: 10px; }\r\n\r\nbutton {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  border-radius: 5px;\r\n  font-size: 3em;\r\n  padding: 10px;\r\n  font-weight: bold;\r\n  width: 100%;\r\n}\r\n\r\ninput {\r\n  border: 1px solid #C0C0C0;\r\n  border-radius: 5px;\r\n  font-style: italic;\r\n}\r\n\r\n#team-name { width: 80% ;}\r\n\r\nh2 { font-weight: normal; }\r\n\r\n.session-link { margin: 10px; }\r\n\r\n.column {\r\n    float: left;\r\n    width: 50%;\r\n}\r\n\r\n.row:after {\r\n    content: \"\";\r\n    display: table;\r\n    clear: both;\r\n}\r\n\r\n.clicks-label {\r\n  font-style: italic;\r\n  font-weight: normal;\r\n  font-size: 1em;\r\n  margin-bottom: 0;\r\n}\r\n\r\n.clicks-score {\r\n  font-size: 3em;\r\n  color: #0077CC;\r\n  font-weight: bold;\r\n  margin: 0 0 0 0;\r\n}\r\n\r\n#selected-team-row {\r\n  background-color: #0077CC;\r\n  color: #FFFFFF;\r\n  font-size: 3em;\r\n  font-weight: bold;\r\n}\r\n\r\nblockquote { font-style: italic; display: inline-block; }\r\nblockquote > footer { text-align: right; margin-top: 10px; }\r\n", ""]);
 
 // exports
 

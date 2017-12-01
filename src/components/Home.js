@@ -6,6 +6,10 @@ import BackgroundPage from './BackgroundPage';
 const Home = () => {
   return (
     <BackgroundPage>
+      <blockquote>
+        "Let's admit it, you would be clicking randomly on web anyway"
+        <footer>— Albert Einstein</footer>
+      </blockquote>
       <div className = "container">
         <EnterTeam />
         <GetLeaderboard />

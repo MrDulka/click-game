@@ -15,9 +15,10 @@ body {
   width: 70%;
   margin: auto;
   padding: 20px;
+  max-width: 700px;
 }
 
-table { width: 100%; border-collapse: collapse; }
+table { width: 100%; border-collapse: collapse; margin-top: 30px;}
 
 .team { text-align: left; }
 
@@ -35,29 +36,23 @@ td { font-weight: bold; }
 
 .team-select { padding: 10px; }
 
-.btn {
+button {
   background-color: #0077CC;
   color: #FFFFFF;
   border-radius: 5px;
   font-size: 3em;
   padding: 10px;
   font-weight: bold;
+  width: 100%;
 }
 
-.btn-small { width: 40%; }
-.btn-big { width: 100%; }
-
-.team-select > input, label {
-  width: 40%;
-  float: left;
-  clear: left;
-  position: relative;
-}
-
-.team-select > input {
+input {
   border: 1px solid #C0C0C0;
   border-radius: 5px;
+  font-style: italic;
 }
+
+#team-name { width: 80% ;}
 
 h2 { font-weight: normal; }
 
@@ -85,7 +80,7 @@ h2 { font-weight: normal; }
   font-size: 3em;
   color: #0077CC;
   font-weight: bold;
-  margin-top: 0;
+  margin: 0 0 0 0;
 }
 
 #selected-team-row {
@@ -94,3 +89,6 @@ h2 { font-weight: normal; }
   font-size: 3em;
   font-weight: bold;
 }
+
+blockquote { font-style: italic; display: inline-block; }
+blockquote > footer { text-align: right; margin-top: 10px; }

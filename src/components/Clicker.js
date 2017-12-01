@@ -3,7 +3,7 @@ import React from 'react';
 const Clicker = ({ doClick, sessionClicks, teamClicks }) => {
   return (
     <div>
-      <button className = "btn btn-big" onClick = {doClick}>CLICK!</button>
+      <button onClick = {doClick}>CLICK!</button>
       <div className="row">
         <div className="column">
           <h3 className = "clicks-label">Your clicks:</h3>
