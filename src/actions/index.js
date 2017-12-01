@@ -1,6 +1,6 @@
 export const REQUEST_CLICK = 'REQUEST_CLICK';
 export const RECEIVE_CLICK = 'RECEIVE_CLICK';
-export const REROLL_CLICK = 'REROLL_CLICK';
+export const ERROR_CLICK = 'ERROR_CLICK';
 export const REQUEST_LEADERBOARD = 'REQUEST_LEADERBOARD';
 export const RECEIVE_LEADERBOARD = 'RECEIVE_LEADERBOARD'
 export const SET_SESSION = 'SET_SESSION';
@@ -26,9 +26,9 @@ export const receiveClick = (teamClicks, sessionClicks, team, session) => {
   }
 }
 
-export const rerollClick = (team, session) => {
+export const errorClick = (team, session) => {
   return {
-    type: REROLL_CLICK,
+    type: ERROR_CLICK,
     team,
     session
   }
@@ -82,7 +82,7 @@ export const postClick = (team, session) => dispatch => {
   })
   .then(
     (response) => response.json(),
-    (err) => dispatch(rerollClick(team, session))
+    (err) => dispatch(errorClick(team, session))
   )
   .then(data => {
     if(!data) {

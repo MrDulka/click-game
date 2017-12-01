@@ -1,4 +1,4 @@
-import { REQUEST_CLICK, RECEIVE_CLICK, REROLL_CLICK,
+import { REQUEST_CLICK, RECEIVE_CLICK, ERROR_CLICK,
 REQUEST_LEADERBOARD, RECEIVE_LEADERBOARD, SET_SESSION } from '../actions';
 
 const optimisticClick = (state, action) => {
@@ -34,7 +34,7 @@ const optimisticClick = (state, action) => {
       });
     }
     
-    case REROLL_CLICK: {
+    case ERROR_CLICK: {
       let newTeamIndex = -1;
       let updatedLeaderboard = state.leaderboard.map((team, index) => {
         if(team.name === action.team) {
@@ -99,7 +99,7 @@ export const reducer = (state = {}, action) => {
 
     case REQUEST_CLICK:
     case RECEIVE_CLICK:
-    case REROLL_CLICK:
+    case ERROR_CLICK:
       return optimisticClick(state, action);
 
     default:
